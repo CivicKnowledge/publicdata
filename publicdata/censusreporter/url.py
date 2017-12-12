@@ -16,7 +16,7 @@ from publicdata.censusreporter.jsonurl import CensusReporterJsonUrl
 
 #DEBUG
 import inspect
-from appurl.url import debug_print
+from appurl.util import debug_print
 ##
 
 class CensusReporterURL(WebUrl):

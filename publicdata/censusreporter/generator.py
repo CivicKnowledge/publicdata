@@ -17,7 +17,7 @@ from rowgenerators import Source
 
 #DEBUG
 import inspect
-from appurl.url import debug_print
+from appurl.util import debug_print
 ##
 
 class CensusReporterSource(Source):
@@ -44,6 +44,10 @@ class CensusReporterSource(Source):
         self._source_url = kwargs.get('source_url')
         
         assert isinstance(ref, CensusReporterJsonUrl)
+
+        #DEBUG
+        #debug_print(self.ref.target_file, inspect.getframeinfo(inspect.currentframe()).filename, inspect.getframeinfo(inspect.currentframe()).lineno)        
+        ##
 
     @property
     def columns(self):
@@ -86,10 +90,7 @@ class CensusReporterSource(Source):
         :param kwargs: Catchall so dict can be expanded into the signature.
         :return:
         """
-        #DEBUG
-        #debug_print(self.ref.target_file, inspect.getframeinfo(inspect.currentframe()).filename, inspect.getframeinfo(inspect.currentframe()).lineno)        
-        ##
-        
+                
         table_id, summary_level, geoid = unquote(self.ref.target_file).split('/')        
             
         with open(self.ref.path) as f:
