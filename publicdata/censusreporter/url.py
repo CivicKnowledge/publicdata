@@ -14,6 +14,10 @@ import requests
 from rowgenerators import WebUrl, AppUrlError, parse_app_url
 from publicdata.censusreporter.jsonurl import CensusReporterJsonUrl
 
+#DEBUG
+import inspect
+from appurl.util import debug_print
+##
 
 class CensusReporterURL(WebUrl):
     """A URL for censusreporter tables.
@@ -95,9 +99,9 @@ class CensusReporterURL(WebUrl):
             if cache:
                 cache.makedirs(dirname(self.cache_key), recreate=True)
                 cache.settext(self.cache_key, json.dumps(data, indent=4))
-
-        return parse_app_url(cache.getsyspath(self.cache_key),
-                             fragment=[join(*self._parts),None],
+        
+        return parse_app_url(cache.getsyspath(self.cache_key), 
+                             fragment=["/".join(self._parts),None],
                              ).as_type(CensusReporterJsonUrl)
 
     def get_target(self):
@@ -187,7 +191,7 @@ class CensusReporterShapeURL(CensusReporterURL):
         # The downloaded file doesn't have a .zip extension, so Fiona won't recognize
         # it as a Shapeilfe ZIP archive. So, just make a link.
 
-        p = r.inner.path
+        p = r.inner.path        
         pz = p+'.zip'
 
         if exists(pz):

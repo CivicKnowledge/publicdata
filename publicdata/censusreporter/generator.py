@@ -6,6 +6,7 @@
 """
 
 
+import os
 import json
 from itertools import repeat
 from operator import itemgetter
@@ -14,6 +15,10 @@ from urllib.parse import unquote
 from publicdata.censusreporter.jsonurl import CensusReporterJsonUrl
 from rowgenerators import Source
 
+#DEBUG
+import inspect
+from appurl.util import debug_print
+##
 
 class CensusReporterSource(Source):
     """A RowGenerator source that can be registered for Census REporter URLs.
@@ -37,8 +42,12 @@ class CensusReporterSource(Source):
         super().__init__(ref, cache, working_dir, **kwargs)
 
         self._source_url = kwargs.get('source_url')
-
+        
         assert isinstance(ref, CensusReporterJsonUrl)
+
+        #DEBUG
+        #debug_print(self.ref.target_file, inspect.getframeinfo(inspect.currentframe()).filename, inspect.getframeinfo(inspect.currentframe()).lineno)        
+        ##
 
     @property
     def columns(self):
@@ -81,9 +90,9 @@ class CensusReporterSource(Source):
         :param kwargs: Catchall so dict can be expanded into the signature.
         :return:
         """
-
-        table_id, summary_level, geoid = unquote(self.ref.target_file).split('/')
-
+                
+        table_id, summary_level, geoid = unquote(self.ref.target_file).split('/')        
+            
         with open(self.ref.path) as f:
             data = json.load(f)
 
